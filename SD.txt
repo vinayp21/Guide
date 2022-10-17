@@ -1,0 +1,130 @@
+RPC - remote precedure call - RPC is an interprocess communication protocol that’s widely used in distributed systems. In the OSI model of network communication, RPC spans the transport and application layers
+The RPC method is similar to calling a local procedure, except that the called procedure is usually executed in a different process and on a different computer.
+
+Eventual consistency- weakest consistency model
+   the returned value isn’t meant to be the latest value. However, the value will finally reach its latest state.
+   At time T1, Alice sends a write request to update the value of x to 10
+   The system saves the updated value of x
+   At time T2, Alice and Bob read the value of x
+   The system returns the same value to both read requests, but the value is old. until system is stable.
+   EX-Cassandra is a highly available NoSQL database that provides eventual consistency
+
+casual consistency - better than Eventual consistency
+   2 categories-
+     independent operation - doesn’t ensure ordering 
+     dependant( casually related) - preserves the order of the causally-related operations.
+    EX - post comments
+
+Sequential consistency- is stronger than the causal consistency model. 
+    It preserves the ordering specified by each client’s program. 
+    However, sequential consistency doesn’t ensure that the writes are visible instantaneously or in the same order as they occurred according to some global clock.
+
+Strict consistency -
+   This model ensures that a read request from any replicas will get the latest write value
+   Synchronous- acknowledgment is not sent to the client until the new value is written to all replicas.
+   Linearizability - opposite of Synchronous affects the system’s availability, which is why it’s not always used
+
+Non functional requirements-
+ Availability - the system availability
+ Reliability - probability that the service will perform its functions for a specified time
+ Scalability- ability of a system to handle an increasing amount of workload without compromising performance
+   Vertical scalability—scaling up, additional CPU's, RAM. We can only grow it to the limitations of our server.
+   Horizontal scalability—scaling out,  increasing the number of machines in the network
+Maintainability- probability that the service will restore its functions within a specified time of fault occurrence
+   For example, suppose a component has a defined maintainability value of 95% for half an hour. 
+   In that case, the probability of restoring the component to its fully active form in half an hour is 0.95.
+Fault tolerance- refers to a system’s ability to execute persistently even if one or more of its components fail
+   Replication - reduces availability on Synchronous replication, good if eventual consistency is fine.
+   Checkpointing
+
+Types of server -
+
+Web server - Web servers are the first point of contact after load balancers. Data centers have racks full of web servers that usually handle API calls from the clients
+Application server - core app sofware/ business logic- Application servers primarily provide dynamic content, whereas web servers mostly serve static content to the client
+Storage server
+
+             web application storage
+
+RAM          low  high      low
+processor    high  med      med
+hard drive   low  med      high
+
+single server can handle 8,000 RPS
+no of servers required =no of daily active user/8000
+
+DNS uses UDP user datagram protocol
+
+four types of servers in the DNS hierarchy:
+DNS resolver- Resolvers initiate the querying sequence and forward requests to the other DNS name servers
+Root-level name servers -Resolvers initiate the querying sequence and forward requests to the other DNS name servers
+Top-level domain- These servers hold the IP addresses of authoritative name servers
+Authoritative name servers - These are the organization’s DNS name servers that provide the IP addresses of the web or application servers
+
+Algorithms of load balancers
+
+Round-robin- each request is forwarded to a server in the pool in a repeating sequential manner.
+Weighted round-robin - each node is assigned a weight. LBs forward client requests according to the weight of the node. The higher the weight, the higher the number of assignments.
+Least connections- newer arriving requests are assigned to servers with fewer existing connections
+Least response time- server with the least response time is requested to serve the clients.
+IP hash-
+URL hash-
+
+statefull LB - LBs retain a data structure that maps incoming clients to hosting servers
+               increase complexity and limit scalability because session information of all the clients is maintained across all the load balancers
+stateless LB - maintains no state and is, therefore, faster and lightweight. Stateless LBs use consistent hashing to make forwarding decisions
+
+Types of load balancers-
+Layer 4 load balancers - load balancing performed on the basis of transport protocols like TCP and UDP
+Layer 7 load balancers - based on the data of application layer protocols (HTTP headers, URLs, cookies)
+
+Database -
+
+
+replication - sync/async
+types of replication
+
+Single leader or primary-secondary replication - asynchronous replication
+
+Primary-secondary replication is appropriate when our workload is read-heavy
+      Clients reading from different replicas may see inconsistent data in the case of failure of the primary node that couldn’t propagate updated data to the secondary nodes
+  different methods under primary-secondary replication-
+
+   Statement-based replication - 
+            primary node saves all statements that it executes, like insert, delete, update sends them to the secondary nodes to perform.
+            if a write statement is dependent on a prior write, and both of them reach the follower in the wrong order, the outcome on the follower node will be uncertain.
+   Write-ahead log (WAL) shipping-
+            primary node saves the query before executing it in a log file. It then uses these logs to copy the data onto the secondary nodes
+            It’s tightly coupled with the inner structure of the database engine, which makes upgrading software on the leader and followers complicated.
+   Logical (row-based) log replication-
+            if a row is inserted or deleted in a table, the secondary nodes will replicate that change in that specific table.
+            Row-based replication doesn’t have the same difficulties as WAL because it doesn’t require information about data layout inside the database engine
+
+Multi-leader replication - asynchronous replication
+         multiple primary nodes that process the writes and send them to all other primary and secondary nodes to replicate
+         can cause conflict is multiple changes are made
+
+Peer-to-peer or leaderless replication- DynamoDB
+         no single primary node, all are equal
+         it may lead to concurrent writes
+         Quorums - helpful approach used for solving write-write inconsistency is called quorums.
+
+Vertical sharding - break a table into multiple tables so that some columns are in one table while the rest are in the other
+                  -increase the speed of data retrieval from a table consisting of columns with very wide text or a binary large object (blob).
+Horizontal - divide a table into multiple tables by splitting data row-wise
+   Key-range based sharding
+   Hash based sharding
+
+centralized database - pros Data maintenance,stronger consistency and ACID transactions
+                     - cons - causing high latency, single point of failure
+
+distributed database- fast and easy to access data
+                     data is required from multiple sites, which takes more time than expected.
+                     operations can become much more expensive and complex.
+                     Updations and backups in distributed databases take time to synchronize data
+
+key value store
+
+
+
+
+ 

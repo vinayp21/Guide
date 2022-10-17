@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      .slider {
+        display: flex;
+        flex-direction: row;
+        width: 400px;
+        height: 400px;
+        position: relative;
+        justify-content: center;
+      }
+      .slide {
+        display: none;
+        width: 400px;
+        height: 400px;
+        border: 1px solid black;
+        position: absolute;
+        text-align: center;
+      }
+      .slide.active {
+        display: block;
+      }
+      .next {
+        top: 200px;
+        right: 10px;
+        position: absolute;
+      }
+      .prev {
+        top: 200px;
+        left: 10px;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider" id="slider"></div>
+  </body>
+  <script>
+    let currentActive = 2;
+
+    window.onload = function() {
+      loadSlider(["slide 1", "slide 2", "slide 3"], currentActive);
+    };
+    let interval = setInterval(changeSlide, 2000);
+
+    function changeSlide(action = "next") {
+      const container = document.getElementById(currentActive);
+      container.classList.remove("active");
+      if (action === "next") {
+        currentActive = (currentActive % 3) + 1;
+      }
+      if (action === "prev") {
+        currentActive = currentActive - 1 === 0 ? 3 : currentActive - 1;
+      }
+      const container1 = document.getElementById(currentActive);
+      container1.classList.add("active");
+    }
+
+    function mouseover() {
+      clearInterval(interval);
+    }
+    function mouseLeave() {
+      interval = setInterval(changeSlide, 2000);
+    }
+
+    function loadSlider(slides, currentActive) {
+      const ele = document.createDocumentFragment();
+      const container = document.getElementById("slider");
+      let count = 1;
+      for (const slide of slides) {
+        const div = document.createElement("div");
+        div.classList.add("slide");
+        if (count === currentActive) {
+          div.classList.add("active");
+        }
+        div.addEventListener("mouseover", mouseover);
+        div.addEventListener("mouseleave", mouseLeave);
+        div.setAttribute("id", count++);
+
+        div.innerHTML = "<div>" + slide + "</div>";
+        const next = document.createElement("div");
+        next.classList.add("next");
+        next.innerHTML =
+          "<button type=button onclick=changeSlide('next')>></button>";
+        const prev = document.createElement("div");
+        prev.classList.add("prev");
+        prev.innerHTML =
+          "<button type=button onclick=changeSlide('prev')><</button>";
+        div.appendChild(next);
+        div.appendChild(prev);
+        ele.appendChild(div);
+      }
+      container.appendChild(ele);
+    }
+  </script>
+</html>

@@ -1,0 +1,57 @@
+
+Nextjs benifits -
+routing needs no ext package
+SEO
+server renders
+
+
+static generation without data -
+    Generates HTML during build, and reuses on request
+    can be cached at CDNs
+
+static generation with non changing data -
+    can use static generation
+    Through an async function called getStaticProps, you can tell Next.js that you need to get this data once, but it will be the same every time the page is loaded
+    getStaticProps - data will be fetched everytime when page is loaded in dev
+                     creates pre rendered HTML after data is fulfilled at build time
+    Like static generation without data with data gets cached on cdn
+
+SSR for pages with frequent data change
+
+getServerSideProps- fetch data and inform next js that thisdata keeps changing
+
+Next.js fetches the data and pre-renders the HTML, which is then sent to the client on every request. As the data is frequently changing, this is the only way Next.js can handle it.
+
+static optimization indicator -An icon that shows on the page if a page is being statically pre-rendered
+
+getStaticProps example -
+export async function getStaticProps() {
+  let catGiphys = await fetch('https://api.giphy.com/v1/gifs/search?q=cats&api_key=nPJNlVceWHERWCSDBW5XMo1p90l7l9ie&limit=10')
+  catGiphys = await catGiphys.json()
+  return {props: {catGiphys: catGiphys}}  
+}
+
+dynamic route-
+somethingmadeup.com/search/cats
+somethingmadeup.com/search/dogs
+somethingmadeup.com/search/mincraft
+
+folder structure
+  pages
+    search  
+       [searchTerm].jsx -> can name this file anything,but later you will use that name to get access to the value
+       inside [searchTerm].jsx  import {useRouter} from next/router; -> useRouter().query.searchTerm gives param
+
+route parameters in getServerSideProps
+
+export async function getServerSideProps(context) {
+  const searchTerm = context.query.searchTerm
+}
+ Link for dynamic route -
+ <Link
+            href="/search/[pid]"
+            as={`/search/${searchTerm}`}>
+              <a> 
+                {`http://localhost:3000/search/${searchTerm}`}
+              </a>
+      </Link>

@@ -1,0 +1,36 @@
+<!DOCTYPE html> 
+    <html>
+        <head>
+           
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <title>CSV Reader </title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="index.css">
+            <script src="index.js"></script>
+        </head>
+        <body class="dark">
+            <header class="header">
+              <div class="title">
+                CSV Reader
+              </div>
+              <button class="btn" type="button" onclick="changeTheme()">Light-Dark Mode</button>
+            </header>
+          <main class="table-content">
+            <div class="header">
+              <input type="file" id="file-upload" value="Upload CSV"/>
+             <input type="search" class="search-input" placeholder="search" onchange="searchData()"/>
+            </div>
+            <table class="table">
+
+            </table>
+            <div class="no-data hide">
+              No Data Found
+            </div>
+            <div class="invalid hide">
+              Invalid File
+            </div>
+           <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+          </main>
+        </body>
+    </html>

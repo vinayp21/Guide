@@ -1,0 +1,51 @@
+IP address = label to internet connected devices
+IPv4
+IPv6
+
+TCP -negotiates connection makes sure connection is established 
+UDP - same, faster but doesnt guarantee the transmission from both ends, just sends data
+
+nameservers map domain to ip address 
+packet- contains meta data ( where it came from where its going)
+
+ssh - authentication -secure socket shell
+public key(server_-private key(computer)
+cd ~/.ssh 
+ssh-keygen
+
+run droplets -> ssh -i sshkeyname root@ipaddress  / ssh root@ipaddress
+
+"#" dont be on root
+
+Nginx - web server
+reverse proxy
+web server
+proxy server
+
+nginx redirect - return 301/302 "url"
+Nginx subdomain 
+
+certbot - https
+
+
+Containers-
+https://btholt.github.io/complete-intro-to-containers/intro
+https://github.com/btholt/complete-intro-to-containers
+https://github.com/btholt/projects-for-complete-intro-to-containers
+
+recommends additional tools including GraphQL voyager, onegraph, Apollo, and fly.io. Awesome GraphQL
+
+graphql-https://github.com/FrontendMasters/fullstack-graphql
+https://github.com/FrontendMasters/advanced-gql-v2
+
+AWS lamda-
+https://github.com/FrontendMasters/serverless-with-aws
+serverless.com 
+
+nextjs-
+https://hendrixer.github.io/nextjs-course/
+
+tailwind-react/ssr
+https://github.com/btholt/complete-intro-to-react-v6
+https://btholt.github.io/complete-intro-to-react-v6/
+https://github.com/btholt/citr-v6-project/

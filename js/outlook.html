@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: row;
+    }
+    .left-menu {
+      width: 300px;
+      height: 100vh;
+      background: darkslategray;
+      border-right: 1px solid white;
+      padding: 20px;
+    }
+    .mail-list {
+      width: 400px;
+      height: 100vh;
+      background: darkslategray;
+      border-right: 1px solid white;
+    }
+    .mail-content {
+      width: 600px;
+      height: 100vh;
+    }
+    .folder {
+      font-size: 14px;
+      color: white;
+      padding: 5px;
+    }
+    ul li {
+      text-transform: capitalize;
+    }
+    li.active {
+      background: white;
+      color: black;
+    }
+    li.active span {
+      color: black;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .mails {
+      padding: 10px 20px;
+      border-bottom: 1px solid white;
+      color: white;
+      opacity: 0.6;
+    }
+    .mails.unread {
+      opacity: 1;
+    }
+    h3 {
+      margin: 0;
+    }
+    span {
+      color: white;
+    }
+    .left-menu li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+  <body>
+    <div class="outlook">
+      <div class="container">
+        <div class="left-menu"></div>
+        <div class="mail-list"></div>
+        <div class="mail-content"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let data = {
+      inbox: {
+        unreadCount: 10,
+        mails: [
+          {
+            subject: "TEST Mail",
+            content: "This is content",
+            read: false,
+            important: false
+          },
+          {
+            subject: "TEST Mail123",
+            content: "This is content 235232",
+            read: true,
+            important: false
+          },
+          {
+            subject: "TEST Mail 2323",
+            content: "This is content 23234",
+            read: true,
+            important: false
+          }
+        ]
+      },
+      sent: {
+        unreadCount: 0,
+        mails: [
+          {
+            subject: "TEST sent Mail",
+            content: "This is sent content",
+            read: true,
+            important: false
+          },
+          {
+            subject: "TEST Mail123",
+            content: "This is sent content 235232",
+            read: true,
+            important: false
+          },
+          {
+            subject: "TEST Mail 2323",
+            content: "This is sent content 23234",
+            read: true,
+            important: false
+          }
+        ]
+      },
+      spam: {
+        unreadCount: 1,
+        mails: [
+          {
+            subject: "TEST spam",
+            content: "This is spam content",
+            read: false,
+            important: false
+          },
+          {
+            subject: "TEST spamwr1324",
+            content: "This is spam content 235232",
+            read: false,
+            important: false
+          },
+          {
+            subject: "TEST spam 2323",
+            content: "This is spam content  23234",
+            read: false,
+            important: false
+          }
+        ]
+      }
+    };
+    let activeFolder = "inbox";
+
+    window.onload = function() {
+      loadFolders();
+      loadMail(activeFolder);
+      loadcontent(activeFolder);
+    };
+
+    function loadFolders() {
+      const menu = document.querySelector(".left-menu");
+      const folders = Object.keys(data);
+      const list = document.createElement("ul");
+      const fragment = document.createDocumentFragment();
+      for (let folder of folders) {
+        const subList = document.createElement("li");
+        const row = document.createElement("div");
+        const unreadCount = document.createElement("span");
+        unreadCount.textContent = data[folder].unreadCount;
+        subList.classList.add("folder");
+        row.textContent = folder;
+        if (folder === activeFolder) {
+          subList.classList.add("active");
+        }
+        subList.setAttribute("id", folder);
+        subList.addEventListener("click", () => handleFolderClick(folder));
+        subList.appendChild(row);
+        subList.appendChild(unreadCount);
+        fragment.appendChild(subList);
+      }
+      list.appendChild(fragment);
+      menu.appendChild(list);
+    }
+
+    function loadMail(folder) {
+      const allMails = data[folder].mails;
+      const allMailsEle = document.querySelector(".mail-list");
+      const list = document.createElement("ul");
+      const fragment = document.createDocumentFragment();
+      for (let mail of allMails) {
+        const { subject, content, read, important } = mail;
+        const row = document.createElement("li");
+        const div = document.createElement("div");
+        row.classList.add("mails");
+        if (!read) {
+          row.classList.add("unread");
+        }
+        if (important) {
+          row.classList.add("important");
+        }
+        const headerTag = document.createElement("h3");
+        headerTag.textContent = subject;
+        const mailContent = document.createElement("div");
+        mailContent.textContent = content;
+        div.appendChild(headerTag);
+        div.appendChild(mailContent);
+        row.appendChild(div);
+        fragment.appendChild(row);
+        row.addEventListener("click", () => selectMail(folder, mail));
+      }
+      list.appendChild(fragment);
+      allMailsEle.appendChild(list);
+    }
+
+    function loadcontent(folder, mail) {
+      let mailToLoad = mail;
+      if (!mail) {
+        mailToLoad = data[folder].mails[0];
+      }
+      const mailDisplay = document.querySelector(".mail-content");
+      const { subject, content, read, important } = mailToLoad;
+      const subjectDiv = document.createElement("div");
+      subjectDiv.textContent = subject;
+      subjectDiv.classList.add("subject");
+      const mailBody = document.createElement("div");
+      mailBody.classList.add("body");
+      mailBody.textContent = content;
+      mailDisplay.appendChild(subjectDiv);
+      mailDisplay.appendChild(mailBody);
+    }
+
+    function handleFolderClick(folderName) {
+      activeFolder = folderName;
+      const oldActiveFolder = document.querySelector(".left-menu .active");
+      oldActiveFolder.classList.remove("active");
+      const selectedFolder = document.getElementById(folderName);
+      selectedFolder.classList.add("active");
+      const allMailsEle = document.querySelector(".mail-list");
+      allMailsEle.innerHTML = "";
+      const contentELe = document.querySelector(".mail-content");
+      contentELe.innerHTML = "";
+      loadMail(folderName);
+      loadcontent(folderName);
+    }
+
+    function selectMail(folder, mail) {
+      const updateState = data[folder].mails.map(m => {
+        if (m.subject === mail.subject) {
+          return {
+            ...m,
+            read: true
+          };
+        }
+        return m;
+      });
+      data[folder].mails = updateState;
+      const allMailsEle = document.querySelector(".mail-list");
+      allMailsEle.innerHTML = "";
+      loadMail(folder);
+      const contentELe = document.querySelector(".mail-content");
+      contentELe.innerHTML = "";
+      loadcontent(folder, mail);
+    }
+  </script>
+</html>

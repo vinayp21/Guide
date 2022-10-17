@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<head>
+  <link
+    href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <style>
+    .widget {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .fa {
+      font-size: 40px;
+    }
+
+    .fa-star-o:before {
+      content: "\f006";
+
+      /* content: '\f123'; half star*/
+      color: #5f6368;
+    }
+    .fa-star:before {
+      /* content: "\f005"; */
+      content: "\f123";
+      color: gold;
+    }
+  </style>
+
+  <script>
+    window.onload = function() {
+      star(5);
+    };
+
+    function star(count) {
+      let selected = 2;
+      const starEle = document.getElementById("star");
+      const fragment = document.createDocumentFragment();
+      for (let i = 1; i <= count; i++) {
+        const iEle = document.createElement("i");
+        iEle.classList.add("fa");
+        iEle.classList.add("fa-star-o");
+        if (i <= selected) {
+          iEle.classList.add("fa-star");
+        }
+        iEle.dataset.ratingVal = i;
+        fragment.appendChild(iEle);
+      }
+      starEle.appendChild(fragment);
+      starEle.addEventListener("mouseover", onMouseHover);
+      starEle.addEventListener("click", onClick);
+      starEle.addEventListener("mouseleave", onMouseLeave);
+
+      function onClick(e) {
+        const rate = +e.target.dataset.ratingVal;
+        if (rate === selected) {
+          selected = 0;
+        } else {
+          selected = rate;
+        }
+      }
+      function onMouseHover(e) {
+        const rate = +e.target.dataset.ratingVal;
+        for (let i = 0; i < count; i++) {
+          if (i < rate) {
+            starEle.children[i].classList.add("fa-star");
+          } else {
+            starEle.children[i].classList.remove("fa-star");
+          }
+        }
+      }
+      function onMouseLeave(e) {
+        for (let i = 0; i < count; i++) {
+          if (i < selected) {
+            starEle.children[i].classList.add("fa-star");
+          } else {
+            starEle.children[i].classList.remove("fa-star");
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="widget">
+    <div id="star"></div>
+    <div id="display-star-value"></div>
+  </div>
+  <div>
+    <div>
+      <div class="fa fa-star-o"></div>
+    </div>
+    <div>
+      <div class="fa fa-star"></div>
+    </div>
+  </div>
+</body>
+<html>
+  <script src="./toast.js"></script>
+</html>

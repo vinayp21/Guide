@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+  <style>
+    table {
+      border: 1px solid black;
+      padding: 0;
+      margin: 0;
+      border-collapse: collapse;
+    }
+    td,
+    th {
+      border: 1px solid black;
+      padding: 5px;
+    }
+  </style>
+  <body>
+    <div id="calendar">
+      <table id="table">
+        <!-- <tr>
+          <th>
+            S
+          </th>
+          <th>
+            M
+          </th>
+          <th>
+            T
+          </th>
+          <th>
+            W
+          </th>
+          <th>
+            T
+          </th>
+          <th>
+            F
+          </th>
+          <th>
+            S
+          </th>
+        </tr> -->
+      </table>
+    </div>
+    <button onclick="next()">Next</button>
+    <button onclick="prev()">Prev</button>
+  </body>
+  <script>
+    let month = 1;
+    function next() {
+      const table = document.getElementById("table");
+      table.innerHTML = "";
+
+      month += 1;
+      loadCalendar(month, 2022);
+    }
+    function prev() {
+      const table = document.getElementById("table");
+      table.innerHTML = "";
+      month -= 1;
+      loadCalendar(month, 2022);
+    }
+    window.onload = function() {
+      loadCalendar(month, 2022);
+    };
+
+    function loadWeek() {
+      const table = document.getElementById("table");
+      const row = document.createElement("tr");
+      const columns =
+        "<td>S</td><td>M</td> <td>T</td> <td>W</td> <td>T</td> <td>F</td><td>S</td>";
+      row.innerHTML = columns;
+      table.appendChild(row);
+    }
+
+    function loadCalendar(month, year) {
+      loadWeek();
+      const startDay = new Date(`0${month}/01/${year}`).getDay();
+      const currentMonth = new Date(`${month}/01/${year}`).getMonth();
+      const currentDate = new Date(`${month}/01/${year}`);
+      const row = document.createElement("tr");
+      let emptyColumn = "";
+      for (let i = 0; i < startDay; i++) {
+        emptyColumn += "<td></td>";
+      }
+      const table = document.getElementById("table");
+
+      while (currentDate.getMonth() + 1 === month) {
+        emptyColumn += "<td>" + currentDate.getDate() + "</td>";
+        if (currentDate.getDay() === 6) {
+          const row = document.createElement("tr");
+          row.innerHTML = emptyColumn;
+          table.appendChild(row);
+          emptyColumn = "";
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+        console.log(currentDate.getDate());
+      }
+      const lastrow = document.createElement("tr");
+      lastrow.innerHTML = emptyColumn;
+      table.appendChild(lastrow);
+      emptyColumn = "";
+    }
+  </script>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html>
+  <style>
+    h1 {
+      bottom: 0;
+      color: white;
+      background: black;
+      padding: 10px;
+      margin: 0;
+      text-align: center;
+    }
+    .slide {
+      position: relative;
+      width: 1000px;
+    }
+    .show {
+      display: flex;
+      flex-direction: row;
+    }
+    .show img {
+      width: 166px;
+      height: 166px;
+    }
+  </style>
+  <body>
+    <div class="gallery">
+      <div class="img-list">
+        <div class="slide">
+          <img src="https://www.w3schools.com/howto/img_woods_wide.jpg" />
+          <h1 class="title">Test1</h1>
+        </div>
+        <div class="slide">
+          <img src="https://www.w3schools.com/howto/img_5terre_wide.jpg" />
+          <h1 class="title">Test2</h1>
+        </div>
+        <div class="slide">
+          <img src="https://www.w3schools.com/howto/img_mountains_wide.jpg" />
+          <h1 class="title">Test3</h1>
+        </div>
+        <div class="slide">
+          <img src="https://www.w3schools.com/howto/img_lights_wide.jpg" />
+          <h1 class="title">Test4</h1>
+        </div>
+        <div class="slide">
+          <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" />
+          <h1 class="title">Test5</h1>
+        </div>
+        <div class="slide">
+          <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" />
+          <h1 class="title">Test6</h1>
+        </div>
+      </div>
+      <div class="show">
+        <img src="https://www.w3schools.com/howto/img_woods_wide.jpg" />
+        <img src="https://www.w3schools.com/howto/img_5terre_wide.jpg" />
+        <img src="https://www.w3schools.com/howto/img_mountains_wide.jpg" />
+        <img src="https://www.w3schools.com/howto/img_lights_wide.jpg" />
+        <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" />
+        <img src="https://www.w3schools.com/howto/img_snow_wide.jpg" />
+      </div>
+      <button onclick="next()">Next</button>
+      <button onclick="prev()">Prev</button>
+    </div>
+  </body>
+  <script>
+    let slide = 1;
+    let totalSlides = 6;
+    window.onload = function() {
+      loadGallery(slide);
+    };
+    function loadGallery(slideNo) {
+      const list = document.querySelector(".img-list");
+      for (let i = 0; i < list.children.length; i++) {
+        list.children[i].style.display = "none";
+      }
+      const activeSlide = slideNo - 1;
+      list.children[activeSlide].style.display = "block";
+      const thumbnail = document.querySelector(".show");
+      for (let i = 0; i < thumbnail.children.length; i++) {
+        thumbnail.children[i].style.opacity = "0.4";
+      }
+      thumbnail.children[activeSlide].style.opacity = "1";
+    }
+    function next() {
+      slide += 1;
+      if (slide > totalSlides) {
+        slide = 1;
+      }
+
+      loadGallery(slide);
+    }
+    function prev() {
+      slide -= 1;
+      if (slide < 1) {
+        slide = 6;
+      }
+      loadGallery(slide);
+    }
+  </script>
+</html>

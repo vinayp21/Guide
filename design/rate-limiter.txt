@@ -1,0 +1,31 @@
+Rate limitting  - limitting no of request within a time window
+
+Hard Throttling - The number of API requests cannot exceed the throttle limit
+Soft Throttling - Can set the API request limit to exceed a certain percentage
+Elastic or Dynamic Throttling - the number of requests can go beyond the threshold if the system has some resources available
+
+types of algorithms used for Rate Limiting
+
+Fixed Window Algorithm - considers fixed time window (req between start time to end time)
+        more req(double) can be done in last sec of the window and first sec of next window
+        stale dat on read-update 
+
+Rolling Window Algorithm - considers at the start of 1st request (timer starts after 1st req).
+
+Sliding Window algorithm- {userId : (set) [timestamp1,timestamp2,timestamp3]
+         - remove timestamp older that are > current time- time limit
+         - reject if set count is greater than limit
+         - takes more space then fixed window algo
+
+Sliding Window with Counters -{ userId: {timestamp1(ex no of count of req in time limit):counter1, time2: c2}} mix of both fixed and sliding Window
+here we divide the time into small chunks and store in key value store 
+
+rate limit by IP or by user?
+
+is multiple user share across same ip (internet cafe) if one user exceeds limit affects all
+
+user based - Once authenticated, the user will be provided with a token which the user will pass with each request
+This will ensure that we will rate limit against a particular API that has a valid authentication token.
+      - but limiting login api a hacker can exhaust a valid user attemps
+
+hybrid - both per-IP and per-user rate limiting, but requires more memory and storage

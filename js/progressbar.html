@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<style>
+  #progress {
+    background: gray;
+    width: 100%;
+    border: 1px solid black;
+    height: 20px;
+  }
+  #bar {
+    width: 0%;
+    background: green;
+    height: 20px;
+  }
+</style>
+<script>
+  let width = 0;
+  let timer;
+  let timeCount = 0;
+  let countdown;
+  function start(seconds, initialWidth = 0) {
+    if (timer) return;
+    const timeELe = document.getElementById("time");
+    const milliSeconds = seconds * 1000;
+    const bar = document.getElementById("bar");
+    const interval = milliSeconds / 50;
+    const incrementalWidth = 100 / interval;
+    width = initialWidth;
+    if (!countdown) {
+      countdown = setInterval(() => {
+        timeCount += 1;
+        timeELe.innerHTML = timeCount;
+      }, 1000);
+    }
+
+    timer = setInterval(() => {
+      width += incrementalWidth;
+      if (width > 100) {
+        width = 100;
+      }
+      bar.style.width = `${width}%`;
+      if (width === 100) {
+        clearInterval(timer);
+        clearInterval(countdown);
+        timeCount = 0;
+      }
+    }, 50);
+  }
+  function pause() {
+    clearInterval(timer);
+    clearInterval(countdown);
+    timer = null;
+    countdown = null;
+    timeCount;
+  }
+  function resume(seconds) {
+    console.log(width);
+    if (!timer) {
+      start(seconds, width);
+    }
+  }
+</script>
+<body>
+  <div id="progress">
+    <div id="bar"></div>
+  </div>
+  <button onclick="start(30)">Start</button>
+  <button onclick="pause()">Pause</button>
+  <button onclick="resume(30)">Resume</button>
+  <div id="time"></div>
+</body>
+<html></html>
+
+<!-- Alternative -->
+
+<!-- HTML -->
+
+<!-- <button id="addBtn" onclick="start()">add+</button>
+
+<div class="progress" style="display:none">
+  <div class="bar"></div>
+</div> -->
+
+<!-- css -->
+<!-- .progress {
+    height: 20px;
+    border: 1px solid;
+    width: 500px;
+    margin: 20px 0;
+    background-color: grey;
+    border-radius: 5px;
+  }
+  
+  .bar {
+    width: 0px;
+    height: 100%;
+    background-color: red;
+    transition: width 5s linear ;
+  }
+  
+  .loading{
+    width: 100%;
+  } -->
+
+<!-- JS -->
+
+<!-- let btn = document.querySelector('button');
+let progressBar = document.querySelector('.progress')
+const limit=3;
+let count=0;
+
+function start(){
+	if(count<limit){
+  count++;
+  let clonedProgress = progressBar.cloneNode(true);
+  clonedProgress.style.display = 'block';
+
+    setTimeout(() => {
+       clonedProgress.querySelector('.bar').classList.add('loading');
+       setTimeout(() =>{
+       	count--
+       },5000)
+    }, 0)
+  document.body.appendChild(clonedProgress)
+  }
+}
+ -->
+
+<!-- link -> https://codesandbox.io/s/great-robinson-twmkg6?file=/src/App.js -->
+
+<!-- import "./styles.css";
+import React from "react";
+export default function App() {
+  const [width, setWidth] = React.useState(0);
+  const [progressList, setProgressList] = React.useState([]);
+  const [count, setCount] = React.useState(0);
+  const limit = 3;
+
+  const startProgress = (newId) => {
+    return new Promise((resolve, reject) => {
+      let timer = setInterval(() => {
+        setProgressList((list) => {
+          const isPresent =
+            list.length > 0
+              ? list.filter(({ id }) => id === newId).length > 0
+              : false;
+          if (!isPresent) {
+            return [...list, { id: newId, width: 0 }];
+          } else {
+            const newList = list.map((data) => {
+              if (data.id === newId) {
+                if (data.width < 100) {
+                  return {
+                    ...data,
+                    width: data.width + 2
+                  };
+                } else {
+                  clearInterval(timer);
+                  resolve();
+                  return data;
+                }
+              }
+              return data;
+            });
+            return newList;
+          }
+        });
+      }, 50);
+    });
+  };
+
+  const addProgressBar = () => {
+    if (count < limit) {
+      setCount(count + 1);
+      const last =
+        progressList.length > 0 ? progressList[progressList.length - 1].id : 1;
+      startProgress(last + 1).then(() => {
+        setCount((count) => count - 1);
+      });
+    }
+  };
+
+  return (
+    <>
+      <button onClick={addProgressBar}>Click</button>
+      {progressList.map(({ id, width }) => (
+        <div className="progress-bar">
+          <div
+            className="bar"
+            id={`bar-${id}`}
+            style={{ width: `${width}%` }}
+          ></div>
+        </div>
+      ))}
+    </>
+  );
+}
+ -->

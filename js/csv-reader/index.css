@@ -1,0 +1,122 @@
+body.dark{
+    background-color: #111111;
+}
+body.light{
+    background-color: #fff;
+}
+
+.dark .header{
+    background-color: #808080;
+    color:#ffffff;
+    height:40px;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 10px;
+}
+.light .header{
+    background-color: #808080;
+    color:#ffffff;
+    height:40px;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 10px;
+}
+.header .title{
+    color: #fff;
+}
+.btn{
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;;
+}
+.table{
+    /* height: 400px; */
+    overflow-y: scroll;
+    display: block;
+}
+
+/* tbody{
+    overflow-y: scroll;
+    display: block;
+} */
+.light .table tr td{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.dark .table tr td{
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+.table-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.table-content{
+    width:700px;
+    margin:0 auto;
+    margin-top: 150px;
+}
+.search-input{
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.light .table th{
+    background-color: aqua;
+}
+.light .table td{
+    background-color: #fff;
+}
+
+.dark .table th{
+    background-color: aqua;
+}
+.dark .table td{
+    background-color: #111111;
+    color:#fff
+}
+.dark i{
+    color: #fff;
+    margin-left:350px ;
+}
+
+.light i{
+    color:#111111;
+    margin-left:350px ;
+}
+
+.hide{
+    display: none;
+}
+
+.dark .no-data{
+    text-align: center;
+color: #fff;
+border: 1px solid #fff;
+padding: 50px;
+}
+.light .no-data{
+    text-align: center;
+color: #111111;
+border: 1px solid #111111;
+padding: 50px;
+}
+
+.dark .invalid{
+    text-align: center;
+color: #fff;
+border: 1px solid #fff;
+padding: 50px;
+}
+.light .invalid{
+    text-align: center;
+color: #111111;
+border: 1px solid #111111;
+padding: 50px;
+}

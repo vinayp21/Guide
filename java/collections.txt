@@ -1,0 +1,32 @@
+ArrayList -
+  add(element)-Inserting a single element at the end
+  add(int index, E element) -Inserting a single element at a given index
+  addAll(Collection c)- Inserting multiple elements from another Collection
+  remove(int index)- Removing an element at a particular index
+  remove(Object o) - Removing a particular element from the ArrayList
+  removeRange(int fromIndex, int toIndex) Removing all the elements within a range
+  removeAll(Collection<?> c) Removing all the elements within a given Collection
+  Iteration -  
+    for loop
+        for (int i = 0; i < list.size(); i++) { //Simple for loop
+            System.out.println(list.get(i));
+        }
+
+        for (Integer i : list) {   //Enhanced for loop
+            System.out.println(i);
+        }
+
+The iterator() method in ArrayList returns an Iterator type object. The Iterator interface declares the below methods that help with iterating an ArrayList.
+
+hasNext() — This method returns true if there are more elements in the list; otherwise, it returns false.
+
+next() — This method returns the next element in the list. Before calling next(), we should always call hasNext() to verify that there is an element; otherwise, NoSuchElementException will be thrown.
+
+remove() — This method removes the last element returned by the iterator. It can be called only once per call to the next().
+
+forEachRemaining(Consumer<? super E> action) — This method was introduced in Java 8. It performs the given action for each remaining element until all elements have been processed or the action throws an exception. This method’s benefit is that we do not need to check if there is a next element every time.
+Iterator<Integer> itr = list.iterator();
+
+		while(itr.hasNext()) {
+			System.out.println(itr.next());
+		}

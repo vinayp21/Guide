@@ -1,0 +1,56 @@
+top level classes -
+
+Player-
+    person: Person
+    noOfMatghes:int
+    whiteSide:bool
+
+Pawn -
+    color:
+    isKilled
+
+    camMove()
+    isWhite()
+
+    - all pawns extend this and have function canMove(Board board, Box start, Box end)
+
+Box -
+    int x
+    int y
+    getx
+    getY
+
+Board- 
+    createBox
+    resetBox
+
+Moves -
+    startPos: Box
+    endPos:Box
+    Payer: Player:
+    PawnMoved: Pawn
+    pawnKilled:Pawn
+    isCastlingMove
+
+public enum GameStatus {
+    ACTIVE,
+    BLACK_WIN,
+    WHITE_WIN,
+    FORFEIT,
+    STALEMATE,
+    RESIGNATION
+}
+
+Game -
+    Players 
+    Board board
+    currentTurn-
+    setCurrentTurn-
+    gameStatus
+    movesPlayed<List> :Moves
+
+isOver()
+    playerMove()
+
+GameController -
+    isValidMove(str,end,PawnMoved)

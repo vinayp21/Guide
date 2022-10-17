@@ -1,0 +1,57 @@
+URL shortening is used to create shorter aliases for long URLs
+
+Functional Requirements:
+our service should generate a shorter and unique alias This link should be short enough to be easily copied and pasted into applications.
+When users access a short link, our service should redirect them to the original link
+Users should optionally be able to pick a custom short link for their URL
+Links will expire after a standard default timespan. Users should be able to specify the expiration time
+
+
+Non Functional Requirements
+The system should be highly available. This is required because, if our service is down, all the URL redirections will start failing
+URL redirection should happen in real-time with minimal latency
+Shortened links should not be guessable
+
+Traffic estimates: Assuming, we will have 500M new URL shortenings per month, with 100:1 read/write ratio, we can expect 50B redirections during the same period:
+
+100 * 500M => 50B
+What would be Queries Per Second (QPS) for our system? New URLs shortenings per second:
+
+500 million / (30 days * 24 hours * 3600 seconds) = ~200 URLs/s
+Considering 100:1 read/write ratio, URLs redirections per second will be:
+
+100 * 200 URLs/s = 20K/s or 1.7 billion requests per day:
+
+
+System APIs
+createURL(api_dev_key, original_url, custom_alias=None, user_name=None, expire_date=None)
+deleteURL(api_dev_key, url_key) - url_key” is a string representing the shortened URL to be retrieved
+To prevent abuse, we can limit users via their api_dev_key. Each api_dev_key can be limited to a certain number of URL creations and redirections per some time period
+
+Database Design
+We need to store billions of records.
+Each object we store is small (less than 1K).
+There are no relationships between records—other than storing which user created a URL.
+Our service is read-heavy.
+
+We would need two tables: one for storing information about the URL mappings and one for the user’s data who created the short link.
+Since we anticipate storing billions of rows, and we don’t need to use relationships between objects – a NoSQL store like DynamoDB, Cassandra or Riak is a better choice
+
+Encoding actual URL
+compute a unique hash (e.g., MD5 or SHA256) of given URL, hash is then encoded(base 36/62/64)
+
+Using base64 encoding, a 6 letters long key would result in 64^6 = ~68.7 billion possible strings.
+Using base64 encoding, an 8 letters long key would result in 64^8 = ~281 trillion possible strings.
+We can take the first 6 (or 8) letters for the key. This could result in key duplication; to resolve that, we can choose some other characters out of the encoding string or swap some characters.
+We can append an increasing sequence number to each input URL to make it unique and then generate its hash
+Another solution could be to append the user id (unique) to the input URL. However, if the user has not signed in, we would have to ask the user to choose a uniqueness key. 
+Even after this, if we have a conflict, we have to keep generating a key until we get a unique one
+
+Generating keys offline
+key generation service - provides unique 6 char keys in store in key-db (server picls these to generate urls)
+
+Data Partitioning and Replication
+can use hash based  or Range Based (hash keys first letter)
+
+Which cache eviction policy would best fit our needs - Least Recently Used (LRU)
+

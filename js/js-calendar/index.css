@@ -1,0 +1,57 @@
+.calendar {
+}
+
+.calendar .calendar-week {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+}
+table tr td {
+  height: 50px;
+}
+table tr .occupied {
+  background: lightgray;
+}
+.week-display {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.half {
+  display: flex;
+  flex-direction: column;
+}
+.half > div {
+  border-bottom: 0.5px solid lightgray;
+  widows: 100%;
+}
+
+.c-parent {
+  width: 300px;
+  height: 100px;
+  background: gray;
+}
+
+.c-parent .c-slide {
+  float: left;
+  margin-left: 10px;
+  display: none;
+}
+.c-parent .c-slide.c-active {
+  display: block;
+  transition: 3s;
+}
+.clear {
+  clear: both;
+}
+.c-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

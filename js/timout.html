@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    span {
+      font-size: 36px;
+      font-weight: 600;
+    }
+  </style>
+  <script>
+    function start(futureDate) {
+      const currentDate = new Date();
+      const diffInMilliseconds = futureDate - currentDate;
+      const seconds = diffInMilliseconds / 1000;
+      const minutes = seconds / 60;
+      const hours = seconds / 3600;
+      const days = hours / 24;
+
+      let actualDays = parseInt(days);
+      let actualHours = parseInt(hours % 60);
+      let actualMinutes = parseInt(minutes % 60);
+      let actualSeconds = parseInt(seconds % 60);
+
+      const daysEle = document.getElementById("days");
+      const hoursEle = document.getElementById("hours");
+      const minutesEle = document.getElementById("minutes");
+      const secondsEle = document.getElementById("seconds");
+
+      const timer = setInterval(() => {
+        actualSeconds = actualSeconds - 1;
+
+        if (actualSeconds < 1 && actualMinutes > 0) {
+          actualMinutes = actualMinutes - 1;
+          actualSeconds = 59;
+        }
+        if (actualMinutes < 1 && actualHours > 0) {
+          actualHours = actualHours - 1;
+          actualMinutes = 59;
+        }
+        if (actualHours < 1 && actualDays > 0) {
+          actualDays = actualDays - 1;
+          actualHours = 23;
+        }
+        if (actualDays === -1) {
+          clearInterval(timer);
+        }
+
+        secondsEle.innerHTML = actualSeconds;
+        minutesEle.innerHTML = actualMinutes;
+        hoursEle.innerHTML = actualHours;
+        daysEle.innerHTML = actualDays;
+      }, 1000);
+    }
+    window.onload = function() {
+      start(new Date("03-21-2023"));
+    };
+  </script>
+</head>
+<body>
+  <div id="timeout">
+    <span id="days"></span><span>Days:</span> <span id="hours"></span
+    ><span>Hours:</span> <span id="minutes"></span><span>Minutes:</span>
+    <span id="seconds"></span><span>Seconds</span>
+  </div>
+</body>
+<html></html>

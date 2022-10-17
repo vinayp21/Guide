@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <div class="list-container">
+      <input type="text" id="search" name="search" />
+      <div id="list-container"></div>
+      <div id="pagination"></div>
+    </div>
+  </body>
+  <style>
+    .list-container {
+      width: 400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .row {
+      margin-bottom: 10px;
+    }
+    input {
+      margin-bottom: 10px;
+    }
+    .highlight {
+      background: yellow;
+    }
+    .page {
+      border: 1px solid black;
+      width: 15px;
+      height: 15px;
+      margin-right: 5px;
+      padding: 5px;
+    }
+    #pagination {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+  </style>
+  <script>
+    const data = [
+      {
+        text:
+          "1Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "2Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "3Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "4Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "5Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "6Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "7Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "8Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "9Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "Lorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      },
+      {
+        text:
+          "endLorem ipsum dolor sit amet. In quaerat consequatur a reprehenderit eius sed quia dolores non voluptas soluta et aspernatur nihil. Est dicta dolorum ut fugiat sapiente eum fugiat facilis ut fugiat dolorem hic delectus internos. In voluptatem nemo a voluptas inventore et quas deleniti qui consequuntur beatae"
+      }
+    ];
+    const size = 2;
+
+    window.onload = function() {
+      loadList(data);
+      const input = document.getElementById("search");
+
+      input.addEventListener("keyup", inputChange);
+      const pagination = document.getElementById("pagination");
+      const noOfpages = Math.ceil(data.length / size);
+      const pfrag = document.createDocumentFragment();
+      for (let i = 1; i <= noOfpages; i++) {
+        const page = document.createElement("div");
+        const number = document.createElement("span");
+        page.classList.add("page");
+        page.addEventListener("click", () => changePage(i));
+        number.textContent = i;
+        page.appendChild(number);
+        pfrag.appendChild(page);
+      }
+      pagination.appendChild(pfrag);
+    };
+    function inputChange(e) {
+      const value = e.target.value;
+      const container = document.getElementById("list-container");
+      container.innerHTML = "";
+      if (!value) {
+        loadList(data);
+        return;
+      }
+      const filteredData = data.filter(({ text }) => {
+        return text.includes(value);
+      });
+
+      loadList(filteredData, value);
+    }
+
+    function changePage(pageNo) {
+      const container = document.getElementById("list-container");
+      container.innerHTML = "";
+      loadList(data, "", pageNo);
+    }
+    function loadList(data, filteringValue = "", pageNo = 1) {
+      const container = document.getElementById("list-container");
+      const frag = document.createDocumentFragment();
+      const startIndex = pageNo * size - 1;
+      for (
+        let i = startIndex - 1;
+        i < Math.min(pageNo * size, data.length);
+        i++
+      ) {
+        const row = document.createElement("div");
+        row.classList.add("row");
+        if (filteringValue !== "") {
+          const startIndex = data[i].text.indexOf(filteringValue);
+          row.innerHTML = `${data[i].text.slice(
+            0,
+            startIndex
+          )}<span class="highlight">${filteringValue}</span>${data[
+            i
+          ].text.slice(startIndex + filteringValue.length)}`;
+        } else {
+          row.textContent = data[i].text;
+        }
+
+        frag.appendChild(row);
+      }
+      container.appendChild(frag);
+    }
+  </script>
+</html>
