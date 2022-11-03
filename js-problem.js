@@ -887,9 +887,8 @@ function rrr(arr) {
 }
 console.log(rrr([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7]));
 
-// maplimit
 const myFn = (value, callback) => {
-  let random = Math.floor(Math.random() * 10) + 1 * 100;
+  let random = Math.floor(Math.random() * 10) + 1 * 1000;
   setTimeout(() => {
     callback(`test${value}`);
   }, random);
@@ -897,20 +896,29 @@ const myFn = (value, callback) => {
 
 function myMap(input, limit, fn, mainCallback) {
   let output = [];
-  const promiseCallback = function(res) {
-    const index = this.idx;
-    output[index] = res;
-    if (input.length === output.length) {
+  let size = 0;
+
+  const callback = function(str) {
+    size -= 1;
+    output[this.idx] = str;
+    if (output.length === input.length) {
       mainCallback(output);
+    } else {
+      console.log(output);
+      doAgain(this.idx + 1);
     }
   };
 
-  let i = 0;
-  for (const val of input) {
-    const inner = promiseCallback.bind({ idx: i });
-    fn(val, inner);
-    i++;
+  function doAgain(index) {
+    console.log(size);
+    const inner = callback.bind({ idx: index });
+    size += 1;
+    fn(input[index], inner);
+    while (size <= limit && index < input.length - 1) {
+      doAgain(index + 1);
+    }
   }
+  doAgain(0);
 }
 
 myMap([1, 2, 3, 4, 5], 2, myFn, result => {

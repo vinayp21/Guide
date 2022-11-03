@@ -124,6 +124,9 @@ distributed database- fast and easy to access data
 
 key value store
 
+CDN
+CDN mainly stores two types of data: static and dynamic
+
 
 
 

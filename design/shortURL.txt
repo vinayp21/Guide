@@ -42,7 +42,8 @@ compute a unique hash (e.g., MD5 or SHA256) of given URL, hash is then encoded(b
 
 Using base64 encoding, a 6 letters long key would result in 64^6 = ~68.7 billion possible strings.
 Using base64 encoding, an 8 letters long key would result in 64^8 = ~281 trillion possible strings.
-We can take the first 6 (or 8) letters for the key. This could result in key duplication; to resolve that, we can choose some other characters out of the encoding string or swap some characters.
+We can take the first 6 (or 8) letters for the key. This could result in key duplication; 
+to resolve that, we can choose some other characters out of the encoding string or swap some characters.
 We can append an increasing sequence number to each input URL to make it unique and then generate its hash
 Another solution could be to append the user id (unique) to the input URL. However, if the user has not signed in, we would have to ask the user to choose a uniqueness key. 
 Even after this, if we have a conflict, we have to keep generating a key until we get a unique one

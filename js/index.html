@@ -1,7 +1,38 @@
 <!DOCTYPE html>
-<body>
-  Data Structure And Algorithms
-</body>
 <html>
-  <script src="./toast.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>JS Bin</title>
+  </head>
+
+  <body>
+    <div id="twoButtons">
+      <button
+        style="background-color:#28B463"
+        class="button"
+        onclick="remove()"
+      >
+        button
+      </button>
+    </div>
+  </body>
+  <script>
+    //write-your-code-here
+    function remove() {
+      console.log("eferf");
+      const container = document.getElementById("twoButtons");
+
+      const btn = document.querySelector(".button");
+      btn.remove();
+      const newBtn1 = document.createElement("button");
+      const newBtn2 = document.createElement("button");
+      newBtn1.textContent = "new1";
+      newBtn2.textContent = "new2";
+      newBtn1.setAttribute("type", "button");
+      newBtn1.classList.add("button");
+      container.append(newBtn1);
+      container.append(newBtn2);
+    }
+  </script>
 </html>

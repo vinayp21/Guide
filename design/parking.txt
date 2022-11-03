@@ -1,0 +1,45 @@
+class - 
+
+parkinglot-
+    id
+    add
+    addParkingfloors/get
+    addEntry/get
+    addExit/get
+    isFull
+parking foor -
+    floorId
+    addSpot
+    assignVehicletoSpot
+    isFull
+spot 
+    spotId;
+    isOccupied:
+    type:
+
+rate:
+    type:
+    price
+    hours
+
+entrance:
+    id:
+    printTicket
+
+exit:
+    id:
+    ScanTicket:
+    ProcessPayment
+
+vehicle:
+    num:
+    type:
+    assignTicket
+    spot
+
+parking ticket:
+    tickId
+    entrytimestamp:
+    payedAt:
+    payedAmt
+
